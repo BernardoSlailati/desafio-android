@@ -8,9 +8,6 @@ import retrofit2.http.GET
 interface PicPayService {
 
     @GET("users")
-    fun getUsers(): Call<List<UserApi>>
-
-    @GET("users")
-    suspend fun getContacts(): List<UserApi>?
+    suspend fun getContacts(): List<UserApi?>?
 
 }

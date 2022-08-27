@@ -1,8 +1,14 @@
 package com.picpay.desafio.android.di
 
+import android.app.Application
 import android.content.Context
+import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.picpay.desafio.android.data.local.database.MainDatabase
+import com.picpay.desafio.android.data.local.database.dao.FavoriteContactsDao
+import com.picpay.desafio.android.data.local.datasource.FavoriteDataSource
+import com.picpay.desafio.android.data.local.datasource.FavoriteDataSourceImpl
 import com.picpay.desafio.android.data.remote.datasource.UserDataSource
 import com.picpay.desafio.android.data.remote.datasource.UserDataSourceImpl
 import com.picpay.desafio.android.data.remote.service.PicPayService
@@ -15,6 +21,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -24,14 +31,30 @@ import java.util.concurrent.TimeUnit
 
 val dataSourceModule = module {
     single<UserDataSource> { UserDataSourceImpl(get()) }
+    single<FavoriteDataSource> { FavoriteDataSourceImpl(get()) }
 }
 
 val repositoryModule = module {
-    single<UserRepository> { UserRepositoryImpl(get()) }
+    single<UserRepository> { UserRepositoryImpl(get(), get()) }
 }
 
 val viewModelModule = module {
     viewModel { UserViewModel(get()) }
+}
+
+val databaseModule = module {
+    single { provideDatabase(androidApplication()) }
+    single { provideFavoriteContactsDao(get()) }
+}
+
+fun provideDatabase(application: Application): MainDatabase {
+    return Room.databaseBuilder(application, MainDatabase::class.java, "pic_pay_contacts_database")
+        .fallbackToDestructiveMigration()
+        .build()
+}
+
+fun provideFavoriteContactsDao(database: MainDatabase): FavoriteContactsDao {
+    return database.favoriteContactsDao
 }
 
 val networkModule = module {

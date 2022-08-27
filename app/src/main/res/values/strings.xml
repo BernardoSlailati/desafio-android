@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">PicPay</string>
-    <string name="title">Contatos</string>
-    <string name="error">Ocorreu um erro. Tente novamente.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="contacts_title">Contatos</string>
+    <string name="favorites_title">Favoritos</string>
+    <string name="error">Oops, houve um problema ao buscar seus contatos…\nVerifique sua conexão com a internet.</string>
+    <string name="try_again">Tentar Novamente</string>
 </resources>

@@ -4,11 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.picpay.desafio.android.data.remote.model.UserApi
 import com.picpay.desafio.android.databinding.ListItemUserBinding
 import com.picpay.desafio.android.domain.model.User
 
-class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
+class UserListAdapter(
+    private val onIsFavoriteChangeListener: (user: User, isFavorite: Boolean) -> Unit
+) : RecyclerView.Adapter<UserListItemViewHolder>() {
 
     var users = emptyList<User>()
         set(value) {
@@ -18,9 +19,14 @@ class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
                     value
                 )
             )
+            notifyDataSetChanged()
             result.dispatchUpdatesTo(this)
             field = value
         }
+
+    fun clear() {
+        users = emptyList()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListItemViewHolder {
         val binding = ListItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,7 +34,7 @@ class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: UserListItemViewHolder, position: Int) {
-        holder.bind(users[position])
+        holder.bind(users[position], onIsFavoriteChangeListener)
     }
 
     override fun getItemCount(): Int = users.size

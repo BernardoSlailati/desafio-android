@@ -11,4 +11,8 @@ fun UserApi.toDomain() : User =
         username = this.username ?: ""
     )
 
-fun List<UserApi>?.toDomainList() : List<User> = this?.map { it.toDomain() } ?: emptyList()
+fun List<UserApi?>?.toDomainList() : List<User> {
+    val users = mutableListOf<User>()
+    this?.forEach { it?.let { userApi -> users.add(userApi.toDomain()) }  }
+    return users.toList()
+}
