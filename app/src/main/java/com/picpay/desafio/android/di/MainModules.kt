@@ -5,17 +5,17 @@ import android.content.Context
 import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.picpay.desafio.android.data.local.database.MainDatabase
-import com.picpay.desafio.android.data.local.database.dao.FavoriteContactsDao
-import com.picpay.desafio.android.data.local.datasource.FavoriteDataSource
-import com.picpay.desafio.android.data.local.datasource.FavoriteDataSourceImpl
-import com.picpay.desafio.android.data.remote.datasource.UserDataSource
-import com.picpay.desafio.android.data.remote.datasource.UserDataSourceImpl
-import com.picpay.desafio.android.data.remote.service.PicPayService
-import com.picpay.desafio.android.domain.repository.UserRepository
-import com.picpay.desafio.android.domain.repository.UserRepositoryImpl
-import com.picpay.desafio.android.data.remote.extension.isInternetAvailable
+import com.picpay.desafio.android.ui.extension.isInternetAvailable
 import com.picpay.desafio.android.ui.viewmodel.UserViewModel
+import com.slailati.android.data.local.database.MainDatabase
+import com.slailati.android.data.local.database.dao.FavoriteContactsDao
+import com.slailati.android.data.local.datasource.FavoriteDataSource
+import com.slailati.android.data.local.datasource.FavoriteDataSourceImpl
+import com.slailati.android.data.remote.datasource.UserDataSource
+import com.slailati.android.data.remote.datasource.UserDataSourceImpl
+import com.slailati.android.data.remote.service.PicPayService
+import com.slailati.android.domain.repository.UserRepository
+import com.slailati.android.domain.repository.UserRepositoryImpl
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -78,7 +78,7 @@ fun provideOkHttpClient(context: Context): OkHttpClient {
     val offlineInterceptor = Interceptor { chain ->
         var request: Request = chain.request()
         if (!context.isInternetAvailable()) {
-            val maxStale = 60 * 60 * 24 * 30 // Offline cache available for 30 days
+            val maxStale = 60 * 60 * 24 * 30 // offline cache available for 30 days
             request = request.newBuilder()
                 .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
                 .removeHeader("Pragma")
