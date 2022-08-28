@@ -23,7 +23,7 @@ class MainActivityTest {
     @Test
     fun shouldDisplayTitle() {
         launchActivity<MainActivity>().apply {
-            val expectedTitle = context.getString(R.string.contacts)
+            val expectedTitle = context.getString(R.string.contacts_title)
 
             moveToState(Lifecycle.State.RESUMED)
 

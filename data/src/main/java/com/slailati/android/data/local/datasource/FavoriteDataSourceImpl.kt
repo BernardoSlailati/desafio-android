@@ -6,6 +6,7 @@ import com.slailati.android.data.local.model.UserEntity
 class FavoriteDataSourceImpl(
     private val mainDatabase: MainDatabase
 ): FavoriteDataSource {
+
     override suspend fun insert(user: UserEntity): Long =
         mainDatabase.favoriteContactsDao.insert(user)
 
