@@ -14,6 +14,9 @@ class UserViewModelTest {
     private lateinit var userViewModel: UserViewModel
     private lateinit var userRepository: UserRepository
 
+    private val fakeInsertedUser = User("img1", "name1", 1, "username1")
+    private val fakeInsertedUserId = 1
+
     @Before
     fun setUp() {
         userRepository = UserRepositoryImpl(FakeUserDataSource(), FakeFavoriteDataSource())
@@ -23,7 +26,7 @@ class UserViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `insert favorite to database`() = runTest {
-        userViewModel.saveFavorite(User("", "", 1, ""))
+        userViewModel.saveFavorite(fakeInsertedUser)
         val favoritesSize = userRepository.getFavorites().size
 
         Assert.assertEquals(favoritesSize, 1)
@@ -32,7 +35,7 @@ class UserViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `delete favorite from database`() = runTest {
-        userViewModel.saveFavorite(User("", "", 1, ""))
+        userViewModel.saveFavorite(fakeInsertedUser)
         userViewModel.removeFavorite(1)
         val favoritesSize = userRepository.getFavorites().size
 
