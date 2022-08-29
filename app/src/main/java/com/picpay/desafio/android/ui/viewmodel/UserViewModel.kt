@@ -25,9 +25,9 @@ class UserViewModel(
     fun getContacts() {
         viewModelScope.launch {
             val favorites =
-                withContext(Dispatchers.Default) { userRepository.getFavorites() }
+                withContext(Dispatchers.IO) { userRepository.getFavorites() }
             val users =
-                withContext(Dispatchers.Default) { userRepository.getContacts() }
+                withContext(Dispatchers.IO) { userRepository.getContacts() }
             users.map { user ->
                 if (favorites.any { favorite -> favorite.id == user.id }) {
                     user.isFavorite = true
