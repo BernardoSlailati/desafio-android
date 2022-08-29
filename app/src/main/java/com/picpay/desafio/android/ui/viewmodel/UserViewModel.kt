@@ -12,9 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 
-class UserViewModel(
-    private val userRepository: UserRepository
-) : ViewModel(), LifecycleObserver, KoinComponent {
+class UserViewModel(private val userRepository: UserRepository) : ViewModel(), LifecycleObserver,
+    KoinComponent {
 
     private val _users: MutableLiveData<List<User>> = MutableLiveData()
     fun users() = _users
@@ -23,7 +22,7 @@ class UserViewModel(
     fun favorites() = _favorites
 
     fun getContacts() {
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val favorites =
                 withContext(Dispatchers.IO) { userRepository.getFavorites() }
             val users =
@@ -40,7 +39,7 @@ class UserViewModel(
     fun getFavorites() {
         CoroutineScope(Dispatchers.IO).launch {
             val favorites =
-                withContext(Dispatchers.Default) { userRepository.getFavorites() }
+                withContext(Dispatchers.IO) { userRepository.getFavorites() }
             _favorites.postValue(favorites)
         }
     }

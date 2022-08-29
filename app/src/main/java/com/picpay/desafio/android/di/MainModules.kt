@@ -16,6 +16,8 @@ import com.slailati.android.data.remote.datasource.UserDataSourceImpl
 import com.slailati.android.data.remote.service.PicPayService
 import com.slailati.android.domain.repository.UserRepository
 import com.slailati.android.domain.repository.UserRepositoryImpl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

@@ -1,45 +1,114 @@
 package com.picpay.desafio.android.ui.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.slailati.android.data.remote.model.UserApi
 import com.slailati.android.domain.model.User
 import com.slailati.android.domain.repository.UserRepository
 import com.slailati.android.domain.repository.UserRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import org.junit.*
 
+@ExperimentalCoroutinesApi
 class UserViewModelTest {
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var userRepository: UserRepository
 
-    private val fakeInsertedUser = User("img1", "name1", 1, "username1")
-    private val fakeInsertedUserId = 1
+    private val fakeFavoriteFirstUser = User("img1", "name1", 1, "username1")
+
+    private val fakeFirstUser = UserApi("img1", "name1", 1, "username1")
+    private val fakeSecondUser = UserApi("img2", "name2", 2, "username2")
+    private val fakeThirdUser = UserApi("img3", "name3", 3, "username3")
 
     @Before
     fun setUp() {
-        userRepository = UserRepositoryImpl(FakeUserDataSource(), FakeFavoriteDataSource())
+        userRepository = UserRepositoryImpl(
+            FakeUserDataSource(
+                mutableListOf(
+                    fakeFirstUser,
+                    fakeSecondUser,
+                    fakeThirdUser
+                )
+            ), FakeFavoriteDataSource()
+        )
         userViewModel = UserViewModel(userRepository)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `insert favorite to database`() = runTest {
-        userViewModel.saveFavorite(fakeInsertedUser)
-        val favoritesSize = userRepository.getFavorites().size
+    fun `insert favorite to database`() {
+        userViewModel.saveFavorite(fakeFavoriteFirstUser)
+        userViewModel.getFavorites()
 
-        Assert.assertEquals(favoritesSize, 1)
+        val result = userViewModel.favorites().getOrAwaitValue()
+
+        Assert.assertEquals(result.size, 1)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `delete favorite from database`() = runTest {
-        userViewModel.saveFavorite(fakeInsertedUser)
-        userViewModel.removeFavorite(1)
-        val favoritesSize = userRepository.getFavorites().size
+    fun `delete favorite from database`() {
+        userViewModel.saveFavorite(fakeFavoriteFirstUser)
+        userViewModel.removeFavorite(fakeFavoriteFirstUser.id)
 
-        Assert.assertEquals(favoritesSize, 0)
+        userViewModel.getFavorites()
+        val result = userViewModel.favorites().getOrAwaitValue()
+
+        Assert.assertEquals(result.size, 0)
+    }
+
+    @Test
+    fun `get users from server to fill the contacts list`() {
+        userViewModel.getContacts()
+        val result = userViewModel.users().getOrAwaitValue()
+
+        Assert.assertEquals(result.size, 3)
+    }
+
+    @Test
+    fun `check if a user from server is favorite`() {
+        userViewModel.saveFavorite(fakeFavoriteFirstUser)
+
+        userViewModel.getContacts()
+        val result = userViewModel.users().getOrAwaitValue()
+
+        val isFirstUserFavorite = result.find { it.id == fakeFavoriteFirstUser.id }?.isFavorite
+
+        Assert.assertEquals(isFirstUserFavorite, true)
+    }
+
+    @Test
+    fun `check if a user from server is not favorite`() {
+        userViewModel.saveFavorite(fakeFavoriteFirstUser)
+
+        userViewModel.getContacts()
+        val result = userViewModel.users().getOrAwaitValue()
+
+        val isSecondUserFavorite = result.find { it.id != fakeFavoriteFirstUser.id }?.isFavorite
+
+        Assert.assertEquals(isSecondUserFavorite, false)
+    }
+
+    @Test
+    fun `get empty favorites from database to fill the favorites list`() {
+        userViewModel.getFavorites()
+        val result = userViewModel.favorites().getOrAwaitValue()
+
+        Assert.assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `get not empty favorites from database to fill the favorites list`(){
+        userViewModel.saveFavorite(fakeFavoriteFirstUser)
+        userViewModel.getFavorites()
+        val result = userViewModel.favorites().getOrAwaitValue()
+
+        Assert.assertTrue(result.isNotEmpty())
     }
 
 }
