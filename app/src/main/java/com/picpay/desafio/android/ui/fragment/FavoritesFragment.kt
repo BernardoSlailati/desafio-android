@@ -51,7 +51,7 @@ class FavoritesFragment : Fragment() {
             configureFavoritesRecyclerView()
 
             ivBackToContacts.setOnClickListener {
-                it?.findNavController()?.navigate(R.id.action_favoritesFragment_to_contactsFragment)
+                it?.findNavController()?.navigateUp()
             }
 
             requireFavorites()

@@ -22,7 +22,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel(), L
     fun favorites() = _favorites
 
     fun getContacts() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val favorites =
                 withContext(Dispatchers.IO) { userRepository.getFavorites() }
             val users =
@@ -37,7 +37,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel(), L
     }
 
     fun getFavorites() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val favorites =
                 withContext(Dispatchers.IO) { userRepository.getFavorites() }
             _favorites.postValue(favorites)
