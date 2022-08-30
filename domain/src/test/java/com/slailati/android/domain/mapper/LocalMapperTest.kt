@@ -1,5 +1,9 @@
 package com.slailati.android.domain.mapper
 
+import com.slailati.android.domain.utils.fakeFirstUser
+import com.slailati.android.domain.utils.fakeFirstUserEntity
+import com.slailati.android.domain.utils.fakeUserDomainList
+import com.slailati.android.domain.utils.fakeUserEntityList
 import org.junit.Assert
 import org.junit.Test
 

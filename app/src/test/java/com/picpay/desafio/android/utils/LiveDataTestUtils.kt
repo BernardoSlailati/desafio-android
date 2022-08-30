@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.ui.viewmodel
+package com.picpay.desafio.android.utils
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData

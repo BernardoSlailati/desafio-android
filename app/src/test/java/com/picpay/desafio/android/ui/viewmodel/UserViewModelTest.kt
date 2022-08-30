@@ -1,12 +1,12 @@
 package com.picpay.desafio.android.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.slailati.android.data.remote.model.UserApi
-import com.slailati.android.domain.model.User
+import com.picpay.desafio.android.utils.*
+import com.picpay.desafio.android.utils.datasource.FakeFavoriteDataSource
+import com.picpay.desafio.android.utils.datasource.FakeUserDataSource
 import com.slailati.android.domain.repository.UserRepository
 import com.slailati.android.domain.repository.UserRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import org.junit.*
 
 @ExperimentalCoroutinesApi
@@ -20,12 +20,6 @@ class UserViewModelTest {
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var userRepository: UserRepository
-
-    private val fakeFavoriteFirstUser = User("img1", "name1", 1, "username1")
-
-    private val fakeFirstUser = UserApi("img1", "name1", 1, "username1")
-    private val fakeSecondUser = UserApi("img2", "name2", 2, "username2")
-    private val fakeThirdUser = UserApi("img3", "name3", 3, "username3")
 
     @Before
     fun setUp() {

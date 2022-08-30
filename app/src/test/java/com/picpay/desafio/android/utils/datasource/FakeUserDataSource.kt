@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.ui.viewmodel
+package com.picpay.desafio.android.utils.datasource
 
 import com.slailati.android.data.remote.datasource.UserDataSource
 import com.slailati.android.data.remote.model.UserApi

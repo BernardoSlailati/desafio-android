@@ -1,20 +1,16 @@
 package com.slailati.android.domain.repository
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import com.slailati.android.data.local.database.MainDatabase
-import com.slailati.android.data.local.database.dao.FavoriteContactsDao
-import com.slailati.android.domain.mapper.*
-import com.slailati.android.domain.repository.datasource.FakeFavoriteDataSource
-import com.slailati.android.domain.repository.datasource.FakeUserDataSource
+import com.slailati.android.domain.utils.datasource.FakeFavoriteDataSource
+import com.slailati.android.domain.utils.datasource.FakeUserDataSource
+import com.slailati.android.domain.utils.fakeFavoriteUserToBeDeleted
+import com.slailati.android.domain.utils.fakeFavoriteUserToBeInserted
+import com.slailati.android.domain.utils.fakeFavoritesUserEntityList
+import com.slailati.android.domain.utils.fakeUserDomainListAllCorrect
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import java.io.IOException
 
 
 class UserRepositoryTest {

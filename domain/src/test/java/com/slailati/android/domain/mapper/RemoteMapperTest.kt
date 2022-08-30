@@ -1,5 +1,6 @@
 package com.slailati.android.domain.mapper
 
+import com.slailati.android.domain.utils.*
 import org.junit.Assert
 import org.junit.Test
 

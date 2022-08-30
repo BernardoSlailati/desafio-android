@@ -1,8 +1,8 @@
-package com.slailati.android.domain.repository.datasource
+package com.slailati.android.domain.utils.datasource
 
 import com.slailati.android.data.local.datasource.FavoriteDataSource
 import com.slailati.android.data.local.model.UserEntity
-import com.slailati.android.domain.mapper.fakeUserEntityList
+import com.slailati.android.domain.utils.fakeUserEntityList
 
 class FakeFavoriteDataSource(var favoriteUsers: MutableList<UserEntity> = mutableListOf()): FavoriteDataSource {
 

@@ -1,4 +1,4 @@
-package com.slailati.android.domain.mapper
+package com.slailati.android.domain.utils
 
 import com.slailati.android.data.local.model.UserEntity
 import com.slailati.android.data.remote.model.UserApi
